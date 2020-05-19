@@ -1,0 +1,14 @@
+#!/bin/bash
+set -x #echo on
+
+cp index.html temp/index.html
+yuicompressor style.css > temp/style.css
+npx google-closure-compiler --js=game.js --js_output_file=temp/game.js
+npx google-closure-compiler --js=sfxr.js --js_output_file=temp/sfxr.js
+npx google-closure-compiler --js=rng.js --js_output_file=temp/rng.js
+npx google-closure-compiler --js=pep.js --js_output_file=temp/pep.js
+inliner -i temp/index.html > packed/index.html
+
+rm -f packed.zip
+zip -r packed.zip packed
+advzip -z4 -i 100 packed.zip
